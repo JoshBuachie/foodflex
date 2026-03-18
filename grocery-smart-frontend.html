@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GrocerySmart — Real Kroger Prices</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0f0a; --surface: #111811; --card: #161e16;
+    --accent: #4ade80; --accent2: #86efac; --text: #f0faf0;
+    --muted: #6b7c6b; --border: #1e2e1e; --danger: #f87171; --gold: #fbbf24;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: linear-gradient(rgba(74,222,128,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(74,222,128,0.03) 1px, transparent 1px);
+    background-size: 40px 40px; pointer-events: none; z-index: 0;
+  }
+  .container { position: relative; z-index: 1; max-width: 940px; margin: 0 auto; padding: 0 20px 60px; }
+  header { padding: 36px 0 24px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.5rem; }
+  .logo span { color: var(--accent); }
+  .badge { background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.2); color: var(--accent); font-size: 0.68rem; font-weight: 600; padding: 4px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 1px; }
+  .hero { text-align: center; padding: 16px 0 36px; }
+  .hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 5vw, 3.2rem); font-weight: 800; line-height: 1.08; letter-spacing: -1px; margin-bottom: 14px; }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero p { color: var(--muted); font-size: 1rem; max-width: 460px; margin: 0 auto 10px; line-height: 1.6; }
+  .live-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(74,222,128,0.07); border: 1px solid rgba(74,222,128,0.15); border-radius: 20px; padding: 5px 12px; font-size: 0.78rem; color: var(--accent); margin-top: 10px; }
+  .pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: pulseAnim 1.5s ease infinite; }
+  @keyframes pulseAnim { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.4; transform:scale(0.8); } }
+
+  /* Panel */
+  .panel { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 26px; margin-bottom: 28px; }
+  .panel-title { font-family: 'Syne', sans-serif; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 16px; }
+  .row { display: grid; gap: 10px; margin-bottom: 14px; }
+  .row-2 { grid-template-columns: 1fr auto; }
+  .row-3 { grid-template-columns: 1fr 1fr auto; }
+  .input-wrap { position: relative; }
+  .input-icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); font-size: 1rem; pointer-events: none; }
+  input[type="text"] { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.93rem; padding: 12px 14px 12px 40px; outline: none; transition: border-color 0.2s; }
+  input[type="text"]:focus { border-color: var(--accent); }
+  input[type="text"]::placeholder { color: var(--muted); }
+  .btn { border: none; border-radius: 12px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.9rem; padding: 12px 18px; transition: all 0.2s; }
+  .btn-ghost { background: var(--surface); border: 1px solid var(--border); color: var(--muted); }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-outline { background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.2); color: var(--accent); }
+  .btn-outline:hover { background: rgba(74,222,128,0.15); }
+  .btn-primary { background: var(--accent); color: #0a150a; font-family: 'Syne', sans-serif; font-weight: 700; width: 100%; padding: 15px; font-size: 1rem; border-radius: 14px; margin-top: 14px; }
+  .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+  .btn-primary:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+  /* Tags */
+  .tags { display: flex; flex-wrap: wrap; gap: 7px; min-height: 38px; margin-bottom: 14px; }
+  .tag { background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.2); border-radius: 8px; color: var(--accent2); display: flex; align-items: center; gap: 5px; font-size: 0.83rem; padding: 5px 10px; animation: popIn 0.18s ease; }
+  @keyframes popIn { from { transform: scale(0.75); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .tag-x { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1rem; padding: 0; }
+  .tag-x:hover { color: var(--danger); }
+  .empty-tags { color: var(--muted); font-size: 0.84rem; align-self: center; }
+
+  /* Quick picks */
+  .quick-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .qp { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; color: var(--muted); cursor: pointer; font-size: 0.76rem; padding: 4px 10px; transition: all 0.14s; }
+  .qp:hover { color: var(--text); border-color: var(--muted); }
+
+  /* Radius */
+  .radius-row { display: flex; align-items: center; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .radius-label { color: var(--muted); font-size: 0.82rem; }
+  .rbtn { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; color: var(--muted); cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 0.8rem; padding: 4px 11px; transition: all 0.14s; }
+  .rbtn.active, .rbtn:hover { border-color: var(--accent); color: var(--accent); background: rgba(74,222,128,0.06); }
+  hr.div { border: none; border-top: 1px solid var(--border); margin: 18px 0; }
+
+  /* Status */
+  .status-bar { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--muted); margin-bottom: 8px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); }
+  .dot.green { background: var(--accent); }
+
+  /* Loading */
+  .loading { text-align: center; padding: 50px 20px; }
+  .spinner { width: 38px; height: 38px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.75s linear infinite; margin: 0 auto 14px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading p { color: var(--muted); font-size: 0.9rem; }
+
+  /* Error */
+  .error-box { background: rgba(248,113,113,0.07); border: 1px solid rgba(248,113,113,0.2); border-radius: 14px; padding: 18px 22px; color: var(--danger); font-size: 0.9rem; }
+
+  /* Store cards */
+  .results-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+  .results-hdr h2 { font-family: 'Syne', sans-serif; font-size: 1.15rem; font-weight: 700; }
+  .grid { display: grid; gap: 14px; }
+  .scard { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 20px 22px; transition: border-color 0.2s, transform 0.2s; position: relative; overflow: hidden; animation: slideUp 0.3s ease both; }
+  .scard:hover { border-color: rgba(74,222,128,0.3); transform: translateY(-2px); }
+  @keyframes slideUp { from { opacity:0; transform: translateY(18px); } to { opacity:1; transform: translateY(0); } }
+  .scard.best { border-color: rgba(74,222,128,0.45); background: linear-gradient(135deg, #111e11, #0e180e); }
+  .best-badge { position: absolute; top: 13px; right: 14px; background: var(--accent); color: #0a150a; font-family: 'Syne', sans-serif; font-size: 0.63rem; font-weight: 800; letter-spacing: 0.8px; padding: 3px 9px; border-radius: 6px; text-transform: uppercase; }
+  .store-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
+  .store-name { font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 4px; }
+  .store-meta { color: var(--muted); font-size: 0.8rem; display: flex; gap: 12px; flex-wrap: wrap; }
+  .total-wrap { text-align: right; }
+  .total-val { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--accent); line-height: 1; }
+  .total-lbl { color: var(--muted); font-size: 0.72rem; margin-top: 2px; }
+  .items-list { border-top: 1px solid var(--border); padding-top: 14px; display: grid; gap: 7px; }
+  .item-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .item-name { font-size: 0.87rem; }
+  .item-brand { color: var(--muted); font-size: 0.75rem; }
+  .item-price { font-size: 0.9rem; font-weight: 500; color: var(--accent2); }
+  .item-promo { background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.2); color: var(--gold); font-size: 0.7rem; padding: 1px 6px; border-radius: 4px; }
+  .not-found { color: var(--danger); font-size: 0.78rem; background: rgba(248,113,113,0.07); padding: 1px 7px; border-radius: 4px; }
+  .grade { display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:4px; font-size:0.7rem; font-weight:800; flex-shrink:0; }
+  .grade-A { background:#1a7f37; color:#fff; }
+  .grade-B { background:#5a9e2f; color:#fff; }
+  .grade-C { background:#e6a817; color:#000; }
+  .grade-D { background:#e07b2a; color:#fff; }
+  .grade-E { background:#cc2a2a; color:#fff; }
+  .nova-pill { font-size:0.65rem; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:4px; padding:1px 5px; color:var(--muted); }
+  .allergen-pill { font-size:0.65rem; background:rgba(248,113,113,0.08); border:1px solid rgba(248,113,113,0.15); border-radius:4px; padding:1px 5px; color:var(--danger); }
+  .product-img { width: 36px; height: 36px; object-fit: contain; border-radius: 6px; background: var(--surface); flex-shrink: 0; }
+  .savings-bar { background: linear-gradient(135deg, rgba(74,222,128,0.07), rgba(74,222,128,0.03)); border: 1px solid rgba(74,222,128,0.15); border-radius: 14px; padding: 16px 22px; margin-top: 18px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+  .savings-bar p { color: var(--muted); font-size: 0.87rem; }
+  .savings-bar strong { color: var(--accent); font-size: 1.1rem; font-family: 'Syne', sans-serif; }
+
+  /* Grade filter bar */
+  .filter-bar { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:18px; padding:14px 18px; background:var(--card); border:1px solid var(--border); border-radius:14px; }
+  .filter-label { color:var(--muted); font-size:0.8rem; font-weight:500; }
+  .grade-btn { width:32px; height:32px; border-radius:8px; border:2px solid transparent; cursor:pointer; font-family:'Syne',sans-serif; font-size:0.8rem; font-weight:800; transition:all 0.18s; opacity:0.4; }
+  .grade-btn.active { opacity:1; transform:scale(1.15); border-color:rgba(255,255,255,0.3); box-shadow:0 0 10px rgba(255,255,255,0.1); }
+  .grade-btn-A { background:#1a7f37; color:#fff; }
+  .grade-btn-B { background:#5a9e2f; color:#fff; }
+  .grade-btn-C { background:#e6a817; color:#000; }
+  .grade-btn-D { background:#e07b2a; color:#fff; }
+  .grade-btn-E { background:#cc2a2a; color:#fff; }
+  .grade-btn-all { background:var(--surface); border:1px solid var(--border) !important; color:var(--text); font-size:0.7rem; width:auto; padding:0 10px; }
+  .grade-btn-all.active { border-color:var(--accent) !important; color:var(--accent); opacity:1; }
+
+  /* Highlighted item — best health option for that ingredient */
+  .item-row.health-best { background:rgba(74,222,128,0.06); border:1px solid rgba(74,222,128,0.2); border-radius:10px; padding:6px 8px; margin:-2px 0; }
+  .item-row.health-best .item-name { color:var(--accent2); font-weight:500; }
+  .health-crown { font-size:0.7rem; }
+
+  /* Dimmed item — doesn't match active filter */
+  .item-row.dimmed { opacity:0.3; filter:grayscale(60%); }
+
+  /* Setup hint */
+
+  .setup-hint { background: rgba(251,191,36,0.05); border: 1px solid rgba(251,191,36,0.15); border-radius: 14px; padding: 18px 22px; margin-bottom: 24px; }
+  .setup-hint h3 { font-family: 'Syne', sans-serif; font-size: 0.9rem; color: var(--gold); margin-bottom: 8px; }
+  .setup-hint p { font-size: 0.84rem; color: var(--muted); line-height: 1.6; }
+  .setup-hint code { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 1px 5px; font-size: 0.8rem; color: var(--text); }
+  @media(max-width:580px) { .row-3 { grid-template-columns: 1fr; } .best-badge { display:none; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="logo">Grocery<span>Smart</span></div>
+    <div class="badge">Kroger + Nutrition</div>
+  </header>
+
+  <div class="hero">
+    <h1>Real prices.<br><em>Real savings.</em></h1>
+    <p>Connected to Kroger's live product database. Enter your zip code and ingredients to find the cheapest option near you.</p>
+    <div class="live-badge"><span class="pulse"></span> Kroger Prices · Open Food Facts Nutrition</div>
+  </div>
+
+  <!-- Setup hint -->
+  <div class="setup-hint" id="setupHint">
+    <h3>⚙️ Developer Setup Required</h3>
+    <p>
+      This frontend connects to your local backend at <code>http://localhost:5000</code>.
+      Start your backend with <code>python backend.py</code> after adding your Kroger credentials to <code>.env</code>.
+      Get free API keys at <a href="https://developer.kroger.com" target="_blank" style="color:var(--gold)">developer.kroger.com</a>.
+    </p>
+  </div>
+
+  <!-- Search Panel -->
+  <div class="panel">
+    <div class="panel-title">📍 Your Location</div>
+    <div class="row row-2">
+      <div class="input-wrap">
+        <span class="input-icon">🏙️</span>
+        <input type="text" id="zipInput" placeholder="Enter zip code (e.g. 23501)..." maxlength="10">
+      </div>
+      <button class="btn btn-ghost" onclick="detectZip()">🎯 Detect</button>
+    </div>
+    <div class="status-bar" id="locStatus" style="display:none">
+      <span class="dot green" id="locDot"></span>
+      <span id="locText"></span>
+    </div>
+
+    <div class="radius-row">
+      <span class="radius-label">Search radius:</span>
+      <button class="rbtn active" onclick="setRadius(this,5)">5 mi</button>
+      <button class="rbtn" onclick="setRadius(this,10)">10 mi</button>
+      <button class="rbtn" onclick="setRadius(this,25)">25 mi</button>
+    </div>
+
+    <hr class="div">
+
+    <div class="panel-title">🛒 Your Grocery List</div>
+    <div class="tags" id="tags"><span class="empty-tags">Add ingredients below ↓</span></div>
+
+    <div class="row row-2">
+      <div class="input-wrap">
+        <span class="input-icon">🥦</span>
+        <input type="text" id="ingInput" placeholder="e.g. chicken breast, whole milk, eggs..." onkeydown="if(event.key==='Enter') addIng()">
+      </div>
+      <button class="btn btn-outline" onclick="addIng()">+ Add</button>
+    </div>
+
+    <div class="quick-row">
+      <span style="color:var(--muted);font-size:0.75rem;align-self:center;">Quick add:</span>
+      <button class="qp" onclick="qa('chicken breast')">🍗 Chicken</button>
+      <button class="qp" onclick="qa('eggs')">🥚 Eggs</button>
+      <button class="qp" onclick="qa('whole milk')">🥛 Milk</button>
+      <button class="qp" onclick="qa('broccoli')">🥦 Broccoli</button>
+      <button class="qp" onclick="qa('white rice')">🍚 Rice</button>
+      <button class="qp" onclick="qa('olive oil')">🫙 Olive Oil</button>
+      <button class="qp" onclick="qa('bananas')">🍌 Bananas</button>
+      <button class="qp" onclick="qa('greek yogurt')">🥣 Yogurt</button>
+      <button class="qp" onclick="qa('ground beef')">🥩 Ground Beef</button>
+      <button class="qp" onclick="qa('bread')">🍞 Bread</button>
+    </div>
+
+    <button class="btn btn-primary" id="searchBtn" onclick="search()">🔍 Compare Prices at Nearby Stores</button>
+  </div>
+
+  <div id="results"></div>
+</div>
+
+<script>
+  const API = "http://localhost:5000/api"; // Change to your deployed backend URL
+  let ingredients = [];
+  let radius = 5;
+  let storeMap = {}; // locationId -> store info
+
+  // ─── Ingredient management ───────────────────────────────────────────────
+  function addIng() {
+    const inp = document.getElementById("ingInput");
+    const val = inp.value.trim();
+    if (!val || ingredients.includes(val)) { inp.value = ""; return; }
+    ingredients.push(val);
+    renderTags();
+    inp.value = "";
+    inp.focus();
+  }
+
+  function qa(item) { if (!ingredients.includes(item)) { ingredients.push(item); renderTags(); } }
+
+  function removeIng(i) { ingredients.splice(i, 1); renderTags(); }
+
+  function renderTags() {
+    const el = document.getElementById("tags");
+    el.innerHTML = ingredients.length === 0
+      ? '<span class="empty-tags">Add ingredients below ↓</span>'
+      : ingredients.map((v, i) => `<div class="tag">${v}<button class="tag-x" onclick="removeIng(${i})">×</button></div>`).join("");
+  }
+
+  // ─── Radius ──────────────────────────────────────────────────────────────
+  function setRadius(btn, val) {
+    radius = val;
+    document.querySelectorAll(".rbtn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+  }
+
+  // ─── Location ────────────────────────────────────────────────────────────
+  function detectZip() {
+    setStatus("Detecting location...", false);
+    fetch("https://ipapi.co/json/")
+      .then(r => r.json())
+      .then(d => {
+        document.getElementById("zipInput").value = d.postal || "";
+        setStatus(`Detected: ${d.city}, ${d.region}`, true);
+      })
+      .catch(() => setStatus("Could not detect — enter zip manually", false));
+  }
+
+  function setStatus(msg, ok) {
+    const el = document.getElementById("locStatus");
+    document.getElementById("locText").textContent = msg;
+    document.getElementById("locDot").className = `dot ${ok ? "green" : ""}`;
+    el.style.display = "flex";
+  }
+
+  // ─── Main search flow ─────────────────────────────────────────────────────
+  async function search() {
+    const zip = document.getElementById("zipInput").value.trim();
+    if (!zip) { alert("Please enter your zip code."); return; }
+    if (ingredients.length === 0) { alert("Please add at least one ingredient."); return; }
+
+    const btn = document.getElementById("searchBtn");
+    btn.disabled = true;
+    btn.textContent = "⏳ Searching...";
+
+    const resultsEl = document.getElementById("results");
+    resultsEl.innerHTML = `<div class="loading"><div class="spinner"></div><p>Finding stores near ${zip}...</p></div>`;
+
+    try {
+      // Step 1: Get stores
+      const storesRes = await fetch(`${API}/stores?zipCode=${zip}&radius=${radius}&limit=4`);
+      if (!storesRes.ok) throw new Error(`Store search failed: ${storesRes.status}`);
+      const storesData = await storesRes.json();
+
+      if (!storesData.stores?.length) {
+        resultsEl.innerHTML = `<div class="error-box">No Kroger-family stores found within ${radius} miles of ${zip}. Try increasing your radius.</div>`;
+        return;
+      }
+
+      storesData.stores.forEach(s => storeMap[s.locationId] = s);
+      resultsEl.innerHTML = `<div class="loading"><div class="spinner"></div><p>Checking prices at ${storesData.stores.length} stores...</p></div>`;
+
+      // Step 2: Get prices
+      const pricesRes = await fetch(`${API}/prices`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          locationIds: storesData.stores.map(s => s.locationId),
+          ingredients: ingredients,
+        }),
+      });
+      if (!pricesRes.ok) throw new Error(`Price fetch failed: ${pricesRes.status}`);
+      const pricesData = await pricesRes.json();
+
+      renderResults(pricesData.results);
+    } catch (err) {
+      resultsEl.innerHTML = `
+        <div class="error-box">
+          <strong>⚠️ API Connection Error</strong><br><br>
+          ${err.message}<br><br>
+          Make sure your backend is running: <code style="background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:4px;">python backend.py</code>
+        </div>`;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "🔍 Compare Prices at Nearby Stores";
+    }
+  }
+
+  // ─── Render results ───────────────────────────────────────────────────────
+  // Global state for filter
+  let _lastResults = [];
+  let _activeGrade = 'all';
+
+  // Grade order for comparison
+  const GRADE_ORDER = ['A','B','C','D','E'];
+
+  // Find the best nutrition grade per ingredient across all stores
+  function getBestGradePerIngredient(results) {
+    const best = {}; // ingredient -> best grade letter
+    results.forEach(store => {
+      store.items.forEach(item => {
+        const g = item.nutrition_grade;
+        if (!g) return;
+        const ing = item.ingredient;
+        if (!best[ing] || GRADE_ORDER.indexOf(g) < GRADE_ORDER.indexOf(best[ing])) {
+          best[ing] = g;
+        }
+      });
+    });
+    return best;
+  }
+
+  function setGradeFilter(grade) {
+    _activeGrade = grade;
+    // Update button states
+    document.querySelectorAll('.grade-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.grade === grade);
+    });
+    applyFilter();
+  }
+
+  function applyFilter() {
+    const bestGrades = getBestGradePerIngredient(_lastResults);
+    document.querySelectorAll('.item-row[data-ingredient]').forEach(row => {
+      const ing      = row.dataset.ingredient;
+      const rowGrade = row.dataset.grade || '';
+      const bestG    = bestGrades[ing] || '';
+
+      if (_activeGrade === 'all') {
+        // No filter — just highlight the healthiest option per ingredient
+        const isBestHealth = rowGrade && rowGrade === bestG;
+        row.classList.toggle('health-best', isBestHealth);
+        row.classList.remove('dimmed');
+      } else {
+        // Filter active — highlight matches, dim non-matches
+        const matches = rowGrade === _activeGrade;
+        const isBestHealth = matches && rowGrade === bestG;
+        row.classList.toggle('health-best', isBestHealth);
+        row.classList.toggle('dimmed', !matches && rowGrade !== '');
+      }
+    });
+  }
+
+  function renderResults(results) {
+    if (!results?.length) {
+      document.getElementById("results").innerHTML = `<div class="error-box">No results returned. Check your API credentials.</div>`;
+      return;
+    }
+
+    const maxTotal = Math.max(...results.filter(r => r.total).map(r => r.total));
+    const minTotal = results[0]?.total || 0;
+    const savings = (maxTotal - minTotal).toFixed(2);
+
+    _lastResults = results;
+    _activeGrade = 'all';
+
+    // Build filter bar
+    let html = `
+      <div class="filter-bar">
+        <span class="filter-label">🥗 Highlight by Nutri-Score:</span>
+        <button class="grade-btn grade-btn-all active" data-grade="all" onclick="setGradeFilter('all')">All</button>
+        <button class="grade-btn grade-btn-A" data-grade="A" onclick="setGradeFilter('A')">A</button>
+        <button class="grade-btn grade-btn-B" data-grade="B" onclick="setGradeFilter('B')">B</button>
+        <button class="grade-btn grade-btn-C" data-grade="C" onclick="setGradeFilter('C')">C</button>
+        <button class="grade-btn grade-btn-D" data-grade="D" onclick="setGradeFilter('D')">D</button>
+        <button class="grade-btn grade-btn-E" data-grade="E" onclick="setGradeFilter('E')">E</button>
+        <span style="color:var(--muted);font-size:0.75rem;margin-left:4px;">✨ = healthiest option across stores</span>
+      </div>
+      <div class="results-hdr"><h2>📊 Price comparison · ${results.length} stores</h2></div><div class="grid">`;
+
+    results.forEach((store, idx) => {
+      const info = storeMap[store.locationId] || {};
+      const isBest = idx === 0;
+      const delay = idx * 0.06;
+
+      html += `
+        <div class="scard ${isBest ? "best" : ""}" style="animation-delay:${delay}s">
+          ${isBest ? '<div class="best-badge">🏆 Best Value</div>' : ""}
+          <div class="store-top">
+            <div>
+              <div class="store-name">🛒 ${info.name || "Kroger Store"}</div>
+              <div class="store-meta">
+                ${info.distance ? `<span>📍 ${info.distance} mi</span>` : ""}
+                ${info.hours ? `<span>🕐 ${info.hours}</span>` : ""}
+                ${info.chain ? `<span>🏷 ${info.chain}</span>` : ""}
+              </div>
+            </div>
+            <div class="total-wrap">
+              <div class="total-val">$${store.total ? store.total.toFixed(2) : "—"}</div>
+              <div class="total-lbl">est. total</div>
+            </div>
+          </div>
+          <div class="items-list">
+            ${store.items.map(item => {
+              if (!item.found || !item.price) {
+                return `<div class="item-row" data-ingredient="${item.ingredient}" data-grade="">
+                  <div><div class="item-name">${item.ingredient}</div></div>
+                  <span class="not-found">Not found</span>
+                </div>`;
+              }
+              const grade = item.nutrition_grade;
+              const gradeEl = grade ? `<span class="grade grade-${grade}" title="Nutri-Score ${grade}: ${item.nutrition_grade_label || ''}">${grade}</span>` : '';
+              const novaEl = item.nova_group ? `<span class="nova-pill" title="${item.nova_label || ''}">NOVA ${item.nova_group}</span>` : '';
+              const allergenEl = (item.allergens || []).slice(0,2).map(a => `<span class="allergen-pill">${a}</span>`).join('');
+              return `<div class="item-row" style="flex-wrap:wrap;" data-ingredient="${item.ingredient}" data-grade="${grade || ''}">
+                ${item.image ? `<img class="product-img" src="${item.image}" alt="${item.name}" onerror="this.style.display='none'">` : ""}
+                <div style="flex:1;min-width:0;">
+                  <div class="item-name">${item.name || item.ingredient}</div>
+                  ${item.brand ? `<div class="item-brand">${item.brand} · ${item.size || ""}</div>` : ""}
+                  <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:3px;">${novaEl}${allergenEl}</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+                  ${gradeEl}
+                  <span class="item-price">$${item.price.toFixed(2)}</span>
+                  ${item.promo ? '<span class="item-promo">🏷 Sale</span>' : ""}
+                </div>
+              </div>`;
+            }).join("")}
+          </div>
+        </div>`;
+    });
+
+    html += `</div>`;
+
+    if (savings > 0 && results[0]) {
+      const bestStore = storeMap[results[0].locationId];
+      html += `
+        <div class="savings-bar">
+          <p>💡 Choosing <strong>${bestStore?.name || "this store"}</strong> saves you vs. the most expensive option</p>
+          <strong>$${savings} saved</strong>
+        </div>`;
+    }
+
+    document.getElementById("results").innerHTML = html;
+    // Highlight best health options immediately on load
+    setTimeout(applyFilter, 50);
+  }
+</script>
+</body>
+</html>
