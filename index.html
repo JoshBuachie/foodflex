@@ -31,13 +31,10 @@
   .live-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(74,222,128,0.07); border: 1px solid rgba(74,222,128,0.15); border-radius: 20px; padding: 5px 12px; font-size: 0.78rem; color: var(--accent); margin-top: 10px; }
   .pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: pulseAnim 1.5s ease infinite; }
   @keyframes pulseAnim { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.4; transform:scale(0.8); } }
-
-  /* Panel */
   .panel { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 26px; margin-bottom: 28px; }
   .panel-title { font-family: 'Syne', sans-serif; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 16px; }
   .row { display: grid; gap: 10px; margin-bottom: 14px; }
   .row-2 { grid-template-columns: 1fr auto; }
-  .row-3 { grid-template-columns: 1fr 1fr auto; }
   .input-wrap { position: relative; }
   .input-icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); font-size: 1rem; pointer-events: none; }
   input[type="text"] { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.93rem; padding: 12px 14px 12px 40px; outline: none; transition: border-color 0.2s; }
@@ -51,42 +48,28 @@
   .btn-primary { background: var(--accent); color: #0a150a; font-family: 'Syne', sans-serif; font-weight: 700; width: 100%; padding: 15px; font-size: 1rem; border-radius: 14px; margin-top: 14px; }
   .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
   .btn-primary:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
-
-  /* Tags */
   .tags { display: flex; flex-wrap: wrap; gap: 7px; min-height: 38px; margin-bottom: 14px; }
   .tag { background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.2); border-radius: 8px; color: var(--accent2); display: flex; align-items: center; gap: 5px; font-size: 0.83rem; padding: 5px 10px; animation: popIn 0.18s ease; }
   @keyframes popIn { from { transform: scale(0.75); opacity: 0; } to { transform: scale(1); opacity: 1; } }
   .tag-x { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1rem; padding: 0; }
   .tag-x:hover { color: var(--danger); }
   .empty-tags { color: var(--muted); font-size: 0.84rem; align-self: center; }
-
-  /* Quick picks */
   .quick-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
   .qp { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; color: var(--muted); cursor: pointer; font-size: 0.76rem; padding: 4px 10px; transition: all 0.14s; }
   .qp:hover { color: var(--text); border-color: var(--muted); }
-
-  /* Radius */
   .radius-row { display: flex; align-items: center; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
   .radius-label { color: var(--muted); font-size: 0.82rem; }
   .rbtn { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; color: var(--muted); cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 0.8rem; padding: 4px 11px; transition: all 0.14s; }
   .rbtn.active, .rbtn:hover { border-color: var(--accent); color: var(--accent); background: rgba(74,222,128,0.06); }
   hr.div { border: none; border-top: 1px solid var(--border); margin: 18px 0; }
-
-  /* Status */
   .status-bar { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--muted); margin-bottom: 8px; }
   .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); }
   .dot.green { background: var(--accent); }
-
-  /* Loading */
   .loading { text-align: center; padding: 50px 20px; }
   .spinner { width: 38px; height: 38px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.75s linear infinite; margin: 0 auto 14px; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .loading p { color: var(--muted); font-size: 0.9rem; }
-
-  /* Error */
   .error-box { background: rgba(248,113,113,0.07); border: 1px solid rgba(248,113,113,0.2); border-radius: 14px; padding: 18px 22px; color: var(--danger); font-size: 0.9rem; }
-
-  /* Store cards */
   .results-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
   .results-hdr h2 { font-family: 'Syne', sans-serif; font-size: 1.15rem; font-weight: 700; }
   .grid { display: grid; gap: 14px; }
@@ -120,8 +103,6 @@
   .savings-bar { background: linear-gradient(135deg, rgba(74,222,128,0.07), rgba(74,222,128,0.03)); border: 1px solid rgba(74,222,128,0.15); border-radius: 14px; padding: 16px 22px; margin-top: 18px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
   .savings-bar p { color: var(--muted); font-size: 0.87rem; }
   .savings-bar strong { color: var(--accent); font-size: 1.1rem; font-family: 'Syne', sans-serif; }
-
-  /* Grade filter bar */
   .filter-bar { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:18px; padding:14px 18px; background:var(--card); border:1px solid var(--border); border-radius:14px; }
   .filter-label { color:var(--muted); font-size:0.8rem; font-weight:500; }
   .grade-btn { width:32px; height:32px; border-radius:8px; border:2px solid transparent; cursor:pointer; font-family:'Syne',sans-serif; font-size:0.8rem; font-weight:800; transition:all 0.18s; opacity:0.4; }
@@ -133,22 +114,10 @@
   .grade-btn-E { background:#cc2a2a; color:#fff; }
   .grade-btn-all { background:var(--surface); border:1px solid var(--border) !important; color:var(--text); font-size:0.7rem; width:auto; padding:0 10px; }
   .grade-btn-all.active { border-color:var(--accent) !important; color:var(--accent); opacity:1; }
-
-  /* Highlighted item — best health option for that ingredient */
   .item-row.health-best { background:rgba(74,222,128,0.06); border:1px solid rgba(74,222,128,0.2); border-radius:10px; padding:6px 8px; margin:-2px 0; }
   .item-row.health-best .item-name { color:var(--accent2); font-weight:500; }
-  .health-crown { font-size:0.7rem; }
-
-  /* Dimmed item — doesn't match active filter */
   .item-row.dimmed { opacity:0.3; filter:grayscale(60%); }
-
-  /* Setup hint */
-
-  .setup-hint { background: rgba(251,191,36,0.05); border: 1px solid rgba(251,191,36,0.15); border-radius: 14px; padding: 18px 22px; margin-bottom: 24px; }
-  .setup-hint h3 { font-family: 'Syne', sans-serif; font-size: 0.9rem; color: var(--gold); margin-bottom: 8px; }
-  .setup-hint p { font-size: 0.84rem; color: var(--muted); line-height: 1.6; }
-  .setup-hint code { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 1px 5px; font-size: 0.8rem; color: var(--text); }
-  @media(max-width:580px) { .row-3 { grid-template-columns: 1fr; } .best-badge { display:none; } }
+  @media(max-width:580px) { .row-2 { grid-template-columns: 1fr; } .best-badge { display:none; } }
 </style>
 </head>
 <body>
@@ -164,17 +133,6 @@
     <div class="live-badge"><span class="pulse"></span> Kroger Prices · Open Food Facts Nutrition</div>
   </div>
 
-  <!-- Setup hint -->
-  <div class="setup-hint" id="setupHint">
-    <h3>⚙️ Developer Setup Required</h3>
-    <p>
-      This frontend connects to your local backend at <code>http://localhost:5000</code>.
-      Start your backend with <code>python backend.py</code> after adding your Kroger credentials to <code>.env</code>.
-      Get free API keys at <a href="https://developer.kroger.com" target="_blank" style="color:var(--gold)">developer.kroger.com</a>.
-    </p>
-  </div>
-
-  <!-- Search Panel -->
   <div class="panel">
     <div class="panel-title">📍 Your Location</div>
     <div class="row row-2">
@@ -188,19 +146,15 @@
       <span class="dot green" id="locDot"></span>
       <span id="locText"></span>
     </div>
-
     <div class="radius-row">
       <span class="radius-label">Search radius:</span>
       <button class="rbtn active" onclick="setRadius(this,5)">5 mi</button>
       <button class="rbtn" onclick="setRadius(this,10)">10 mi</button>
       <button class="rbtn" onclick="setRadius(this,25)">25 mi</button>
     </div>
-
     <hr class="div">
-
     <div class="panel-title">🛒 Your Grocery List</div>
     <div class="tags" id="tags"><span class="empty-tags">Add ingredients below ↓</span></div>
-
     <div class="row row-2">
       <div class="input-wrap">
         <span class="input-icon">🥦</span>
@@ -208,7 +162,6 @@
       </div>
       <button class="btn btn-outline" onclick="addIng()">+ Add</button>
     </div>
-
     <div class="quick-row">
       <span style="color:var(--muted);font-size:0.75rem;align-self:center;">Quick add:</span>
       <button class="qp" onclick="qa('chicken breast')">🍗 Chicken</button>
@@ -222,7 +175,6 @@
       <button class="qp" onclick="qa('ground beef')">🥩 Ground Beef</button>
       <button class="qp" onclick="qa('bread')">🍞 Bread</button>
     </div>
-
     <button class="btn btn-primary" id="searchBtn" onclick="search()">🔍 Compare Prices at Nearby Stores</button>
   </div>
 
@@ -230,12 +182,18 @@
 </div>
 
 <script>
-  const API = "https://livia-stannic-karla.ngrok-free.dev/api"; // Change to your deployed backend URL
+  const API = "https://livia-stannic-karla.ngrok-free.dev/api";
+  // Required header for all ngrok requests — prevents browser warning page
+  const HEADERS = {
+    "Content-Type": "application/json",
+    "ngrok-skip-browser-warning": "true"
+  };
+  const GET_HEADERS = { "ngrok-skip-browser-warning": "true" };
+
   let ingredients = [];
   let radius = 5;
-  let storeMap = {}; // locationId -> store info
+  let storeMap = {};
 
-  // ─── Ingredient management ───────────────────────────────────────────────
   function addIng() {
     const inp = document.getElementById("ingInput");
     const val = inp.value.trim();
@@ -247,7 +205,6 @@
   }
 
   function qa(item) { if (!ingredients.includes(item)) { ingredients.push(item); renderTags(); } }
-
   function removeIng(i) { ingredients.splice(i, 1); renderTags(); }
 
   function renderTags() {
@@ -257,14 +214,12 @@
       : ingredients.map((v, i) => `<div class="tag">${v}<button class="tag-x" onclick="removeIng(${i})">×</button></div>`).join("");
   }
 
-  // ─── Radius ──────────────────────────────────────────────────────────────
   function setRadius(btn, val) {
     radius = val;
     document.querySelectorAll(".rbtn").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
   }
 
-  // ─── Location ────────────────────────────────────────────────────────────
   function detectZip() {
     setStatus("Detecting location...", false);
     fetch("https://ipapi.co/json/")
@@ -283,7 +238,6 @@
     el.style.display = "flex";
   }
 
-  // ─── Main search flow ─────────────────────────────────────────────────────
   async function search() {
     const zip = document.getElementById("zipInput").value.trim();
     if (!zip) { alert("Please enter your zip code."); return; }
@@ -297,8 +251,11 @@
     resultsEl.innerHTML = `<div class="loading"><div class="spinner"></div><p>Finding stores near ${zip}...</p></div>`;
 
     try {
-      // Step 1: Get stores
-      const storesRes = await fetch(`${API}/stores?zipCode=${zip}&radius=${radius}&limit=4`);
+      // Step 1: Get stores — include ngrok header
+      const storesRes = await fetch(
+        `${API}/stores?zipCode=${zip}&radius=${radius}&limit=4`,
+        { headers: GET_HEADERS }
+      );
       if (!storesRes.ok) throw new Error(`Store search failed: ${storesRes.status}`);
       const storesData = await storesRes.json();
 
@@ -310,10 +267,10 @@
       storesData.stores.forEach(s => storeMap[s.locationId] = s);
       resultsEl.innerHTML = `<div class="loading"><div class="spinner"></div><p>Checking prices at ${storesData.stores.length} stores...</p></div>`;
 
-      // Step 2: Get prices
+      // Step 2: Get prices — include ngrok header
       const pricesRes = await fetch(`${API}/prices`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: HEADERS,
         body: JSON.stringify({
           locationIds: storesData.stores.map(s => s.locationId),
           ingredients: ingredients,
@@ -336,17 +293,12 @@
     }
   }
 
-  // ─── Render results ───────────────────────────────────────────────────────
-  // Global state for filter
   let _lastResults = [];
   let _activeGrade = 'all';
-
-  // Grade order for comparison
   const GRADE_ORDER = ['A','B','C','D','E'];
 
-  // Find the best nutrition grade per ingredient across all stores
   function getBestGradePerIngredient(results) {
-    const best = {}; // ingredient -> best grade letter
+    const best = {};
     results.forEach(store => {
       store.items.forEach(item => {
         const g = item.nutrition_grade;
@@ -362,7 +314,6 @@
 
   function setGradeFilter(grade) {
     _activeGrade = grade;
-    // Update button states
     document.querySelectorAll('.grade-btn').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.grade === grade);
     });
@@ -375,14 +326,11 @@
       const ing      = row.dataset.ingredient;
       const rowGrade = row.dataset.grade || '';
       const bestG    = bestGrades[ing] || '';
-
       if (_activeGrade === 'all') {
-        // No filter — just highlight the healthiest option per ingredient
         const isBestHealth = rowGrade && rowGrade === bestG;
         row.classList.toggle('health-best', isBestHealth);
         row.classList.remove('dimmed');
       } else {
-        // Filter active — highlight matches, dim non-matches
         const matches = rowGrade === _activeGrade;
         const isBestHealth = matches && rowGrade === bestG;
         row.classList.toggle('health-best', isBestHealth);
@@ -398,13 +346,11 @@
     }
 
     const maxTotal = Math.max(...results.filter(r => r.total).map(r => r.total));
-    const minTotal = results[0]?.total || 0;
-    const savings = (maxTotal - minTotal).toFixed(2);
+    const savings = (maxTotal - (results[0]?.total || 0)).toFixed(2);
 
     _lastResults = results;
     _activeGrade = 'all';
 
-    // Build filter bar
     let html = `
       <div class="filter-bar">
         <span class="filter-label">🥗 Highlight by Nutri-Score:</span>
@@ -421,10 +367,8 @@
     results.forEach((store, idx) => {
       const info = storeMap[store.locationId] || {};
       const isBest = idx === 0;
-      const delay = idx * 0.06;
-
       html += `
-        <div class="scard ${isBest ? "best" : ""}" style="animation-delay:${delay}s">
+        <div class="scard ${isBest ? "best" : ""}" style="animation-delay:${idx * 0.06}s">
           ${isBest ? '<div class="best-badge">🏆 Best Value</div>' : ""}
           <div class="store-top">
             <div>
@@ -482,7 +426,6 @@
     }
 
     document.getElementById("results").innerHTML = html;
-    // Highlight best health options immediately on load
     setTimeout(applyFilter, 50);
   }
 </script>
