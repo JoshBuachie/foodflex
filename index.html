@@ -117,6 +117,10 @@
   .item-row.health-best { background:rgba(74,222,128,0.06); border:1px solid rgba(74,222,128,0.2); border-radius:10px; padding:6px 8px; margin:-2px 0; }
   .item-row.health-best .item-name { color:var(--accent2); font-weight:500; }
   .item-row.dimmed { opacity:0.3; filter:grayscale(60%); }
+  .coming-soon { display:flex; align-items:center; gap:10px; background:rgba(74,222,128,0.05); border:1px solid rgba(74,222,128,0.12); border-radius:12px; padding:12px 18px; margin-bottom:24px; flex-wrap:wrap; }
+  .coming-soon-label { font-size:0.78rem; color:var(--muted); }
+  .coming-soon-stores { display:flex; flex-wrap:wrap; gap:6px; }
+  .store-pill { background:var(--surface); border:1px solid var(--border); border-radius:6px; font-size:0.72rem; color:var(--muted); padding:3px 9px; }
   @media(max-width:580px) { .row-2 { grid-template-columns: 1fr; } .best-badge { display:none; } }
 </style>
 </head>
@@ -131,6 +135,20 @@
     <h1>Real prices.<br><em>Real savings.</em></h1>
     <p>Connected to Kroger's live product database. Enter your zip code and ingredients to find the cheapest option near you.</p>
     <div class="live-badge"><span class="pulse"></span> Kroger Prices · Open Food Facts Nutrition</div>
+  </div>
+
+  <div class="coming-soon">
+    <span class="coming-soon-label">🔜 More stores coming soon:</span>
+    <div class="coming-soon-stores">
+      <span class="store-pill">🛒 Aldi</span>
+      <span class="store-pill">🏪 Publix</span>
+      <span class="store-pill">🌿 Whole Foods</span>
+      <span class="store-pill">⭐ Wegmans</span>
+      <span class="store-pill">📦 Costco</span>
+      <span class="store-pill">🛍️ Safeway</span>
+      <span class="store-pill">🤠 H-E-B</span>
+      <span class="store-pill">🏬 Walmart</span>
+    </div>
   </div>
 
   <div class="panel">
