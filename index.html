@@ -3,131 +3,131 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GrocerySmart — Real Kroger Prices</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>SmartCart — Real Grocery Prices</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0f0a; --surface: #111811; --card: #161e16;
-    --accent: #4ade80; --accent2: #86efac; --text: #f0faf0;
-    --muted: #6b7c6b; --border: #1e2e1e; --danger: #f87171; --gold: #fbbf24;
+    --bg: #eef4f6; --surface: #ffffff; --card: #ffffff;
+    --accent: #247D7F; --accent2: #44916F; --text: #1d2a2a;
+    --muted: #5b7378; --border: #d4e0e3; --danger: #c76a6a; --gold: #C29470;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+  body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
   body::before {
     content: ''; position: fixed; inset: 0;
-    background-image: linear-gradient(rgba(74,222,128,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(74,222,128,0.03) 1px, transparent 1px);
+    background-image: linear-gradient(rgba(128,185,200,0.15) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(128,185,200,0.15) 1px, transparent 1px);
     background-size: 40px 40px; pointer-events: none; z-index: 0;
   }
   .container { position: relative; z-index: 1; max-width: 940px; margin: 0 auto; padding: 0 20px 60px; }
   header { padding: 36px 0 24px; display: flex; align-items: center; justify-content: space-between; }
-  .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.5rem; }
+  .logo { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.5rem; }
   .logo span { color: var(--accent); }
-  .badge { background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.2); color: var(--accent); font-size: 0.68rem; font-weight: 600; padding: 4px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 1px; }
+  .badge { background: rgba(36,125,127,0.1); border: 1px solid rgba(36,125,127,0.2); color: var(--accent); font-size: 0.68rem; font-weight: 600; padding: 4px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 1px; }
   .hero { text-align: center; padding: 16px 0 36px; }
-  .hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 5vw, 3.2rem); font-weight: 800; line-height: 1.08; letter-spacing: -1px; margin-bottom: 14px; }
+  .hero h1 { font-family: 'Outfit', sans-serif; font-size: clamp(1.8rem, 5vw, 3.2rem); font-weight: 800; line-height: 1.08; letter-spacing: -1px; margin-bottom: 14px; color: #162121; }
   .hero h1 em { font-style: normal; color: var(--accent); }
   .hero p { color: var(--muted); font-size: 1rem; max-width: 460px; margin: 0 auto 10px; line-height: 1.6; }
-  .live-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(74,222,128,0.07); border: 1px solid rgba(74,222,128,0.15); border-radius: 20px; padding: 5px 12px; font-size: 0.78rem; color: var(--accent); margin-top: 10px; }
+  .live-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(128,185,200,0.2); border: 1px solid rgba(128,185,200,0.4); border-radius: 20px; padding: 5px 12px; font-size: 0.78rem; color: var(--accent); margin-top: 10px; }
   .pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: pulseAnim 1.5s ease infinite; }
   @keyframes pulseAnim { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.4; transform:scale(0.8); } }
-  .panel { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 26px; margin-bottom: 28px; }
-  .panel-title { font-family: 'Syne', sans-serif; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 16px; }
+  .panel { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 26px; margin-bottom: 28px; box-shadow: 0 8px 30px rgba(0,0,0,0.02); }
+  .panel-title { font-family: 'Outfit', sans-serif; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 16px; }
   .row { display: grid; gap: 10px; margin-bottom: 14px; }
   .row-2 { grid-template-columns: 1fr auto; }
   .input-wrap { position: relative; }
   .input-icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); font-size: 1rem; pointer-events: none; }
-  input[type="text"] { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.93rem; padding: 12px 14px 12px 40px; outline: none; transition: border-color 0.2s; }
-  input[type="text"]:focus { border-color: var(--accent); }
+  input[type="text"] { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-family: 'Nunito', sans-serif; font-size: 0.93rem; padding: 12px 14px 12px 40px; outline: none; transition: border-color 0.2s, background-color 0.2s; }
+  input[type="text"]:focus { border-color: var(--accent); background: var(--surface); }
   input[type="text"]::placeholder { color: var(--muted); }
-  .btn { border: none; border-radius: 12px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.9rem; padding: 12px 18px; transition: all 0.2s; }
+  .btn { border: none; border-radius: 12px; cursor: pointer; font-family: 'Nunito', sans-serif; font-weight: 600; font-size: 0.9rem; padding: 12px 18px; transition: all 0.2s; }
   .btn-ghost { background: var(--surface); border: 1px solid var(--border); color: var(--muted); }
   .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
-  .btn-outline { background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.2); color: var(--accent); }
-  .btn-outline:hover { background: rgba(74,222,128,0.15); }
-  .btn-primary { background: var(--accent); color: #0a150a; font-family: 'Syne', sans-serif; font-weight: 700; width: 100%; padding: 15px; font-size: 1rem; border-radius: 14px; margin-top: 14px; }
-  .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
-  .btn-primary:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+  .btn-outline { background: rgba(36,125,127,0.08); border: 1px solid rgba(36,125,127,0.2); color: var(--accent); }
+  .btn-outline:hover { background: rgba(36,125,127,0.15); }
+  .btn-primary { background: var(--accent); color: #ffffff; font-family: 'Outfit', sans-serif; font-weight: 700; width: 100%; padding: 15px; font-size: 1rem; border-radius: 14px; margin-top: 14px; transition: all 0.2s; }
+  .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(68,145,111,0.25); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
   .tags { display: flex; flex-wrap: wrap; gap: 7px; min-height: 38px; margin-bottom: 14px; }
-  .tag { background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.2); border-radius: 8px; color: var(--accent2); display: flex; align-items: center; gap: 5px; font-size: 0.83rem; padding: 5px 10px; animation: popIn 0.18s ease; }
+  .tag { background: rgba(128,185,200,0.25); border: 1px solid rgba(128,185,200,0.5); border-radius: 8px; color: var(--accent); display: flex; align-items: center; gap: 5px; font-size: 0.83rem; padding: 5px 10px; animation: popIn 0.18s ease; }
   @keyframes popIn { from { transform: scale(0.75); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-  .tag-x { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1rem; padding: 0; }
-  .tag-x:hover { color: var(--danger); }
+  .tag-x { background: none; border: none; color: var(--accent); cursor: pointer; font-size: 1rem; padding: 0; opacity: 0.6; }
+  .tag-x:hover { color: var(--danger); opacity: 1; }
   .empty-tags { color: var(--muted); font-size: 0.84rem; align-self: center; }
   .quick-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
   .qp { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; color: var(--muted); cursor: pointer; font-size: 0.76rem; padding: 4px 10px; transition: all 0.14s; }
-  .qp:hover { color: var(--text); border-color: var(--muted); }
+  .qp:hover { color: var(--text); border-color: var(--accent); background: var(--bg); }
   .radius-row { display: flex; align-items: center; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
   .radius-label { color: var(--muted); font-size: 0.82rem; }
-  .rbtn { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; color: var(--muted); cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 0.8rem; padding: 4px 11px; transition: all 0.14s; }
-  .rbtn.active, .rbtn:hover { border-color: var(--accent); color: var(--accent); background: rgba(74,222,128,0.06); }
+  .rbtn { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; color: var(--muted); cursor: pointer; font-family: 'Nunito', sans-serif; font-size: 0.8rem; padding: 4px 11px; transition: all 0.14s; }
+  .rbtn.active, .rbtn:hover { border-color: var(--accent); color: var(--accent); background: rgba(128,185,200,0.25); }
   hr.div { border: none; border-top: 1px solid var(--border); margin: 18px 0; }
   .status-bar { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--muted); margin-bottom: 8px; }
   .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); }
-  .dot.green { background: var(--accent); }
+  .dot.green { background: var(--accent2); }
   .loading { text-align: center; padding: 50px 20px; }
   .spinner { width: 38px; height: 38px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.75s linear infinite; margin: 0 auto 14px; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .loading p { color: var(--muted); font-size: 0.9rem; }
-  .error-box { background: rgba(248,113,113,0.07); border: 1px solid rgba(248,113,113,0.2); border-radius: 14px; padding: 18px 22px; color: var(--danger); font-size: 0.9rem; }
+  .error-box { background: rgba(199,106,106,0.08); border: 1px solid rgba(199,106,106,0.2); border-radius: 14px; padding: 18px 22px; color: var(--danger); font-size: 0.9rem; }
   .results-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
-  .results-hdr h2 { font-family: 'Syne', sans-serif; font-size: 1.15rem; font-weight: 700; }
+  .results-hdr h2 { font-family: 'Outfit', sans-serif; font-size: 1.15rem; font-weight: 700; color: #162121; }
   .grid { display: grid; gap: 14px; }
-  .scard { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 20px 22px; transition: border-color 0.2s, transform 0.2s; position: relative; overflow: hidden; animation: slideUp 0.3s ease both; }
-  .scard:hover { border-color: rgba(74,222,128,0.3); transform: translateY(-2px); }
+  .scard { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 20px 22px; transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s; position: relative; overflow: hidden; animation: slideUp 0.3s ease both; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+  .scard:hover { border-color: rgba(36,125,127,0.4); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(36,125,127,0.08); }
   @keyframes slideUp { from { opacity:0; transform: translateY(18px); } to { opacity:1; transform: translateY(0); } }
-  .scard.best { border-color: rgba(74,222,128,0.45); background: linear-gradient(135deg, #111e11, #0e180e); }
-  .best-badge { position: absolute; top: 13px; right: 14px; background: var(--accent); color: #0a150a; font-family: 'Syne', sans-serif; font-size: 0.63rem; font-weight: 800; letter-spacing: 0.8px; padding: 3px 9px; border-radius: 6px; text-transform: uppercase; }
+  .scard.best { border-color: rgba(36,125,127,0.5); background: linear-gradient(135deg, #ffffff, #eef4f6); }
+  .best-badge { position: absolute; top: 13px; right: 14px; background: var(--accent); color: #ffffff; font-family: 'Outfit', sans-serif; font-size: 0.63rem; font-weight: 800; letter-spacing: 0.8px; padding: 3px 9px; border-radius: 6px; text-transform: uppercase; }
   .store-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
-  .store-name { font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 4px; }
+  .store-name { font-family: 'Outfit', sans-serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 4px; color: #162121; }
   .store-meta { color: var(--muted); font-size: 0.8rem; display: flex; gap: 12px; flex-wrap: wrap; }
   .total-wrap { text-align: right; }
-  .total-val { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--accent); line-height: 1; }
+  .total-val { font-family: 'Outfit', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--accent); line-height: 1; }
   .total-lbl { color: var(--muted); font-size: 0.72rem; margin-top: 2px; }
   .items-list { border-top: 1px solid var(--border); padding-top: 14px; display: grid; gap: 7px; }
   .item-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-  .item-name { font-size: 0.87rem; }
+  .item-name { font-size: 0.87rem; font-weight: 500; }
   .item-brand { color: var(--muted); font-size: 0.75rem; }
-  .item-price { font-size: 0.9rem; font-weight: 500; color: var(--accent2); }
-  .item-promo { background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.2); color: var(--gold); font-size: 0.7rem; padding: 1px 6px; border-radius: 4px; }
-  .not-found { color: var(--danger); font-size: 0.78rem; background: rgba(248,113,113,0.07); padding: 1px 7px; border-radius: 4px; }
+  .item-price { font-size: 0.9rem; font-weight: 600; color: var(--accent); }
+  .item-promo { background: rgba(194,148,112,0.15); border: 1px solid rgba(194,148,112,0.3); color: #a6744f; font-size: 0.7rem; padding: 1px 6px; border-radius: 4px; }
+  .not-found { color: var(--danger); font-size: 0.78rem; background: rgba(199,106,106,0.08); padding: 1px 7px; border-radius: 4px; }
   .grade { display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:4px; font-size:0.7rem; font-weight:800; flex-shrink:0; }
-  .grade-A { background:#1a7f37; color:#fff; }
-  .grade-B { background:#5a9e2f; color:#fff; }
-  .grade-C { background:#e6a817; color:#000; }
-  .grade-D { background:#e07b2a; color:#fff; }
-  .grade-E { background:#cc2a2a; color:#fff; }
-  .nova-pill { font-size:0.65rem; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:4px; padding:1px 5px; color:var(--muted); }
-  .allergen-pill { font-size:0.65rem; background:rgba(248,113,113,0.08); border:1px solid rgba(248,113,113,0.15); border-radius:4px; padding:1px 5px; color:var(--danger); }
-  .product-img { width: 36px; height: 36px; object-fit: contain; border-radius: 6px; background: var(--surface); flex-shrink: 0; }
-  .savings-bar { background: linear-gradient(135deg, rgba(74,222,128,0.07), rgba(74,222,128,0.03)); border: 1px solid rgba(74,222,128,0.15); border-radius: 14px; padding: 16px 22px; margin-top: 18px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
-  .savings-bar p { color: var(--muted); font-size: 0.87rem; }
-  .savings-bar strong { color: var(--accent); font-size: 1.1rem; font-family: 'Syne', sans-serif; }
-  .filter-bar { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:18px; padding:14px 18px; background:var(--card); border:1px solid var(--border); border-radius:14px; }
+  .grade-A { background:#247D7F; color:#fff; }
+  .grade-B { background:#44916F; color:#fff; }
+  .grade-C { background:#80B9C8; color:#fff; }
+  .grade-D { background:#C29470; color:#fff; }
+  .grade-E { background:#c76a6a; color:#fff; }
+  .nova-pill { font-size:0.65rem; background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:1px 5px; color:var(--muted); }
+  .allergen-pill { font-size:0.65rem; background:rgba(199,106,106,0.08); border:1px solid rgba(199,106,106,0.15); border-radius:4px; padding:1px 5px; color:var(--danger); }
+  .product-img { width: 36px; height: 36px; object-fit: contain; border-radius: 6px; background: var(--bg); flex-shrink: 0; border: 1px solid var(--border); }
+  .savings-bar { background: linear-gradient(135deg, rgba(128,185,200,0.3), rgba(128,185,200,0.05)); border: 1px solid rgba(36,125,127,0.2); border-radius: 14px; padding: 16px 22px; margin-top: 18px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+  .savings-bar p { color: var(--text); font-size: 0.87rem; }
+  .savings-bar strong { color: var(--accent); font-size: 1.1rem; font-family: 'Outfit', sans-serif; }
+  .filter-bar { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:18px; padding:14px 18px; background:var(--card); border:1px solid var(--border); border-radius:14px; box-shadow: 0 4px 15px rgba(0,0,0,0.01); }
   .filter-label { color:var(--muted); font-size:0.8rem; font-weight:500; }
-  .grade-btn { width:32px; height:32px; border-radius:8px; border:2px solid transparent; cursor:pointer; font-family:'Syne',sans-serif; font-size:0.8rem; font-weight:800; transition:all 0.18s; opacity:0.4; }
-  .grade-btn.active { opacity:1; transform:scale(1.15); border-color:rgba(255,255,255,0.3); box-shadow:0 0 10px rgba(255,255,255,0.1); }
-  .grade-btn-A { background:#1a7f37; color:#fff; }
-  .grade-btn-B { background:#5a9e2f; color:#fff; }
-  .grade-btn-C { background:#e6a817; color:#000; }
-  .grade-btn-D { background:#e07b2a; color:#fff; }
-  .grade-btn-E { background:#cc2a2a; color:#fff; }
+  .grade-btn { width:32px; height:32px; border-radius:8px; border:2px solid transparent; cursor:pointer; font-family:'Outfit',sans-serif; font-size:0.8rem; font-weight:800; transition:all 0.18s; opacity:0.5; }
+  .grade-btn.active { opacity:1; transform:scale(1.15); border-color:rgba(36,125,127,0.4); box-shadow:0 2px 8px rgba(36,125,127,0.2); }
+  .grade-btn-A { background:#247D7F; color:#fff; }
+  .grade-btn-B { background:#44916F; color:#fff; }
+  .grade-btn-C { background:#80B9C8; color:#fff; }
+  .grade-btn-D { background:#C29470; color:#fff; }
+  .grade-btn-E { background:#c76a6a; color:#fff; }
   .grade-btn-all { background:var(--surface); border:1px solid var(--border) !important; color:var(--text); font-size:0.7rem; width:auto; padding:0 10px; }
   .grade-btn-all.active { border-color:var(--accent) !important; color:var(--accent); opacity:1; }
-  .item-row.health-best { background:rgba(74,222,128,0.06); border:1px solid rgba(74,222,128,0.2); border-radius:10px; padding:6px 8px; margin:-2px 0; }
-  .item-row.health-best .item-name { color:var(--accent2); font-weight:500; }
-  .item-row.dimmed { opacity:0.3; filter:grayscale(60%); }
-  .coming-soon { display:flex; align-items:center; gap:10px; background:rgba(74,222,128,0.05); border:1px solid rgba(74,222,128,0.12); border-radius:12px; padding:12px 18px; margin-bottom:24px; flex-wrap:wrap; }
-  .coming-soon-label { font-size:0.78rem; color:var(--muted); }
+  .item-row.health-best { background:rgba(128,185,200,0.15); border:1px solid rgba(36,125,127,0.2); border-radius:10px; padding:6px 8px; margin:-2px 0; }
+  .item-row.health-best .item-name { color: var(--accent); font-weight:600; }
+  .item-row.dimmed { opacity:0.4; filter:grayscale(40%); }
+  .coming-soon { display:flex; align-items:center; gap:10px; background:rgba(178,217,196,0.25); border:1px solid rgba(178,217,196,0.5); border-radius:12px; padding:12px 18px; margin-bottom:24px; flex-wrap:wrap; }
+  .coming-soon-label { font-size:0.78rem; color:var(--accent2); font-weight: 600;}
   .coming-soon-stores { display:flex; flex-wrap:wrap; gap:6px; }
-  .store-pill { background:var(--surface); border:1px solid var(--border); border-radius:6px; font-size:0.72rem; color:var(--muted); padding:3px 9px; }
+  .store-pill { background:var(--surface); border:1px solid var(--border); border-radius:6px; font-size:0.72rem; color:var(--muted); padding:3px 9px; box-shadow: 0 1px 2px rgba(0,0,0,0.02);}
   @media(max-width:580px) { .row-2 { grid-template-columns: 1fr; } .best-badge { display:none; } }
 </style>
 </head>
 <body>
 <div class="container">
   <header>
-    <div class="logo">Grocery<span>Smart</span></div>
+    <div class="logo">Smart<span>Cart</span></div>
     <div class="badge">Kroger + Nutrition</div>
   </header>
 
@@ -201,11 +201,7 @@
 
 <script>
   const API = "https://livia-stannic-karla.ngrok-free.dev/api";
-  // Required header for all ngrok requests — prevents browser warning page
-  const HEADERS = {
-    "Content-Type": "application/json",
-    "ngrok-skip-browser-warning": "true"
-  };
+  const HEADERS = { "Content-Type": "application/json", "ngrok-skip-browser-warning": "true" };
   const GET_HEADERS = { "ngrok-skip-browser-warning": "true" };
 
   let ingredients = [];
@@ -239,9 +235,6 @@
   }
 
   function detectZip() {
-    // Location detection disabled — backend runs on a home server
-    // which would detect the developer's location, not the user's.
-    // Users should enter their zip code manually.
     document.getElementById("zipInput").focus();
     setStatus("Please type your zip code above.", false);
   }
@@ -266,11 +259,7 @@
     resultsEl.innerHTML = `<div class="loading"><div class="spinner"></div><p>Finding stores near ${zip}...</p></div>`;
 
     try {
-      // Step 1: Get stores — include ngrok header
-      const storesRes = await fetch(
-        `${API}/stores?zipCode=${zip}&radius=${radius}&limit=4`,
-        { headers: GET_HEADERS }
-      );
+      const storesRes = await fetch(`${API}/stores?zipCode=${zip}&radius=${radius}&limit=4`, { headers: GET_HEADERS });
       if (!storesRes.ok) throw new Error(`Store search failed: ${storesRes.status}`);
       const storesData = await storesRes.json();
 
@@ -282,14 +271,10 @@
       storesData.stores.forEach(s => storeMap[s.locationId] = s);
       resultsEl.innerHTML = `<div class="loading"><div class="spinner"></div><p>Checking prices at ${storesData.stores.length} stores...</p></div>`;
 
-      // Step 2: Get prices — include ngrok header
       const pricesRes = await fetch(`${API}/prices`, {
         method: "POST",
         headers: HEADERS,
-        body: JSON.stringify({
-          locationIds: storesData.stores.map(s => s.locationId),
-          ingredients: ingredients,
-        }),
+        body: JSON.stringify({ locationIds: storesData.stores.map(s => s.locationId), ingredients }),
       });
       if (!pricesRes.ok) throw new Error(`Price fetch failed: ${pricesRes.status}`);
       const pricesData = await pricesRes.json();
@@ -300,7 +285,7 @@
         <div class="error-box">
           <strong>⚠️ API Connection Error</strong><br><br>
           ${err.message}<br><br>
-          Make sure your backend is running: <code style="background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:4px;">python backend.py</code>
+          Make sure your backend is running: <code style="background:rgba(0,0,0,0.1);padding:2px 6px;border-radius:4px;">python backend.py</code>
         </div>`;
     } finally {
       btn.disabled = false;
@@ -319,9 +304,7 @@
         const g = item.nutrition_grade;
         if (!g) return;
         const ing = item.ingredient;
-        if (!best[ing] || GRADE_ORDER.indexOf(g) < GRADE_ORDER.indexOf(best[ing])) {
-          best[ing] = g;
-        }
+        if (!best[ing] || GRADE_ORDER.indexOf(g) < GRADE_ORDER.indexOf(best[ing])) best[ing] = g;
       });
     });
     return best;
@@ -329,26 +312,22 @@
 
   function setGradeFilter(grade) {
     _activeGrade = grade;
-    document.querySelectorAll('.grade-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.grade === grade);
-    });
+    document.querySelectorAll('.grade-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.grade === grade));
     applyFilter();
   }
 
   function applyFilter() {
     const bestGrades = getBestGradePerIngredient(_lastResults);
     document.querySelectorAll('.item-row[data-ingredient]').forEach(row => {
-      const ing      = row.dataset.ingredient;
+      const ing = row.dataset.ingredient;
       const rowGrade = row.dataset.grade || '';
-      const bestG    = bestGrades[ing] || '';
+      const bestG = bestGrades[ing] || '';
       if (_activeGrade === 'all') {
-        const isBestHealth = rowGrade && rowGrade === bestG;
-        row.classList.toggle('health-best', isBestHealth);
+        row.classList.toggle('health-best', rowGrade && rowGrade === bestG);
         row.classList.remove('dimmed');
       } else {
         const matches = rowGrade === _activeGrade;
-        const isBestHealth = matches && rowGrade === bestG;
-        row.classList.toggle('health-best', isBestHealth);
+        row.classList.toggle('health-best', matches && rowGrade === bestG);
         row.classList.toggle('dimmed', !matches && rowGrade !== '');
       }
     });
@@ -362,7 +341,6 @@
 
     const maxTotal = Math.max(...results.filter(r => r.total).map(r => r.total));
     const savings = (maxTotal - (results[0]?.total || 0)).toFixed(2);
-
     _lastResults = results;
     _activeGrade = 'all';
 
