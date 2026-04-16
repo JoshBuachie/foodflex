@@ -158,7 +158,7 @@
         <span class="input-icon">🏙️</span>
         <input type="text" id="zipInput" placeholder="Enter zip code (e.g. 23501)..." maxlength="10">
       </div>
-      <button class="btn btn-ghost" onclick="detectZip()">🎯 Detect</button>
+      <button class="btn btn-ghost" onclick="detectZip()" title="Enter your zip code manually">📍 Enter Zip</button>
     </div>
     <div class="status-bar" id="locStatus" style="display:none">
       <span class="dot green" id="locDot"></span>
@@ -239,14 +239,11 @@
   }
 
   function detectZip() {
-    setStatus("Detecting location...", false);
-    fetch("https://ipapi.co/json/")
-      .then(r => r.json())
-      .then(d => {
-        document.getElementById("zipInput").value = d.postal || "";
-        setStatus(`Detected: ${d.city}, ${d.region}`, true);
-      })
-      .catch(() => setStatus("Could not detect — enter zip manually", false));
+    // Location detection disabled — backend runs on a home server
+    // which would detect the developer's location, not the user's.
+    // Users should enter their zip code manually.
+    document.getElementById("zipInput").focus();
+    setStatus("Please type your zip code above.", false);
   }
 
   function setStatus(msg, ok) {
