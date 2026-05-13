@@ -2,6 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-W10WEGQFWJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-W10WEGQFWJ');
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SmartCart — Real Grocery Prices</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -130,13 +138,13 @@
     <div class="logo">Smart<span>Cart</span></div>
     <div class="badge">Kroger + Nutrition</div>
   </header>
-
+ 
   <div class="hero">
     <h1>Real prices.<br><em>Real savings.</em></h1>
     <p>Connected to Kroger's live product database. Enter your zip code and ingredients to find the cheapest option near you.</p>
     <div class="live-badge"><span class="pulse"></span> Kroger Prices · Open Food Facts Nutrition</div>
   </div>
-
+ 
   <div class="coming-soon">
     <span class="coming-soon-label">🔜 More stores coming soon:</span>
     <div class="coming-soon-stores">
@@ -150,7 +158,7 @@
       <span class="store-pill">🏬 Walmart</span>
     </div>
   </div>
-
+ 
   <div class="panel">
     <div class="panel-title">📍 Your Location</div>
     <div class="row row-2">
@@ -195,19 +203,19 @@
     </div>
     <button class="btn btn-primary" id="searchBtn" onclick="search()">🔍 Compare Prices at Nearby Stores</button>
   </div>
-
+ 
   <div id="results"></div>
 </div>
-
+ 
 <script>
   const API = "https://livia-stannic-karla.ngrok-free.dev/api";
   const HEADERS = { "Content-Type": "application/json", "ngrok-skip-browser-warning": "true" };
   const GET_HEADERS = { "ngrok-skip-browser-warning": "true" };
-
+ 
   let ingredients = [];
   let radius = 5;
   let storeMap = {};
-
+ 
   function addIng() {
     const inp = document.getElementById("ingInput");
     const val = inp.value.trim();
@@ -217,60 +225,66 @@
     inp.value = "";
     inp.focus();
   }
-
+ 
   function qa(item) { if (!ingredients.includes(item)) { ingredients.push(item); renderTags(); } }
   function removeIng(i) { ingredients.splice(i, 1); renderTags(); }
-
+ 
   function renderTags() {
     const el = document.getElementById("tags");
     el.innerHTML = ingredients.length === 0
       ? '<span class="empty-tags">Add ingredients below ↓</span>'
       : ingredients.map((v, i) => `<div class="tag">${v}<button class="tag-x" onclick="removeIng(${i})">×</button></div>`).join("");
   }
-
+ 
   function setRadius(btn, val) {
     radius = val;
     document.querySelectorAll(".rbtn").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
   }
-
+ 
   function detectZip() {
     document.getElementById("zipInput").focus();
     setStatus("Please type your zip code above.", false);
   }
-
+ 
   function setStatus(msg, ok) {
     const el = document.getElementById("locStatus");
     document.getElementById("locText").textContent = msg;
     document.getElementById("locDot").className = `dot ${ok ? "green" : ""}`;
     el.style.display = "flex";
   }
-
+ 
   async function search() {
     const zip = document.getElementById("zipInput").value.trim();
     if (!zip) { alert("Please enter your zip code."); return; }
     if (ingredients.length === 0) { alert("Please add at least one ingredient."); return; }
-
+ 
+    // Track search event in Google Analytics
+    gtag('event', 'search', {
+      'event_category': 'SmartCart',
+      'event_label': zip,
+      'value': ingredients.length
+    });
     const btn = document.getElementById("searchBtn");
     btn.disabled = true;
     btn.textContent = "⏳ Searching...";
-
+ 
     const resultsEl = document.getElementById("results");
     resultsEl.innerHTML = `<div class="loading"><div class="spinner"></div><p>Finding stores near ${zip}...</p></div>`;
-
+ 
     try {
       const storesRes = await fetch(`${API}/stores?zipCode=${zip}&radius=${radius}&limit=4`, { headers: GET_HEADERS });
       if (!storesRes.ok) throw new Error(`Store search failed: ${storesRes.status}`);
       const storesData = await storesRes.json();
-
+ 
       if (!storesData.stores?.length) {
         resultsEl.innerHTML = `<div class="error-box">No Kroger-family stores found within ${radius} miles of ${zip}. Try increasing your radius.</div>`;
         return;
       }
-
+ 
       storesData.stores.forEach(s => storeMap[s.locationId] = s);
       resultsEl.innerHTML = `<div class="loading"><div class="spinner"></div><p>Checking prices at ${storesData.stores.length} stores...</p></div>`;
-
+ 
       const pricesRes = await fetch(`${API}/prices`, {
         method: "POST",
         headers: HEADERS,
@@ -278,7 +292,7 @@
       });
       if (!pricesRes.ok) throw new Error(`Price fetch failed: ${pricesRes.status}`);
       const pricesData = await pricesRes.json();
-
+ 
       renderResults(pricesData.results);
     } catch (err) {
       resultsEl.innerHTML = `
@@ -292,11 +306,11 @@
       btn.textContent = "🔍 Compare Prices at Nearby Stores";
     }
   }
-
+ 
   let _lastResults = [];
   let _activeGrade = 'all';
   const GRADE_ORDER = ['A','B','C','D','E'];
-
+ 
   function getBestGradePerIngredient(results) {
     const best = {};
     results.forEach(store => {
@@ -309,13 +323,13 @@
     });
     return best;
   }
-
+ 
   function setGradeFilter(grade) {
     _activeGrade = grade;
     document.querySelectorAll('.grade-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.grade === grade));
     applyFilter();
   }
-
+ 
   function applyFilter() {
     const bestGrades = getBestGradePerIngredient(_lastResults);
     document.querySelectorAll('.item-row[data-ingredient]').forEach(row => {
@@ -332,18 +346,18 @@
       }
     });
   }
-
+ 
   function renderResults(results) {
     if (!results?.length) {
       document.getElementById("results").innerHTML = `<div class="error-box">No results returned. Check your API credentials.</div>`;
       return;
     }
-
+ 
     const maxTotal = Math.max(...results.filter(r => r.total).map(r => r.total));
     const savings = (maxTotal - (results[0]?.total || 0)).toFixed(2);
     _lastResults = results;
     _activeGrade = 'all';
-
+ 
     let html = `
       <div class="filter-bar">
         <span class="filter-label">🥗 Highlight by Nutri-Score:</span>
@@ -356,7 +370,7 @@
         <span style="color:var(--muted);font-size:0.75rem;margin-left:4px;">✨ = healthiest option across stores</span>
       </div>
       <div class="results-hdr"><h2>📊 Price comparison · ${results.length} stores</h2></div><div class="grid">`;
-
+ 
     results.forEach((store, idx) => {
       const info = storeMap[store.locationId] || {};
       const isBest = idx === 0;
@@ -406,9 +420,9 @@
           </div>
         </div>`;
     });
-
+ 
     html += `</div>`;
-
+ 
     if (savings > 0 && results[0]) {
       const bestStore = storeMap[results[0].locationId];
       html += `
@@ -417,7 +431,7 @@
           <strong>$${savings} saved</strong>
         </div>`;
     }
-
+ 
     document.getElementById("results").innerHTML = html;
     setTimeout(applyFilter, 50);
   }
