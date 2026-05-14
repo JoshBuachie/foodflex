@@ -80,11 +80,11 @@
   .results-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
   .results-hdr h2 { font-family: 'Outfit', sans-serif; font-size: 1.15rem; font-weight: 700; color: #162121; }
   .grid { display: grid; gap: 14px; }
-  .scard { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 20px 22px; transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s; position: relative; overflow: hidden; animation: slideUp 0.3s ease both; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+  .scard { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 20px 22px; transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s; animation: slideUp 0.3s ease both; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
   .scard:hover { border-color: rgba(36,125,127,0.4); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(36,125,127,0.08); }
   @keyframes slideUp { from { opacity:0; transform: translateY(18px); } to { opacity:1; transform: translateY(0); } }
   .scard.best { border-color: rgba(36,125,127,0.5); background: linear-gradient(135deg, #ffffff, #eef4f6); }
-  .best-badge { position: absolute; top: 13px; right: 14px; background: var(--accent); color: #ffffff; font-family: 'Outfit', sans-serif; font-size: 0.63rem; font-weight: 800; letter-spacing: 0.8px; padding: 3px 9px; border-radius: 6px; text-transform: uppercase; }
+  .best-badge { display: inline-block; background: var(--accent); color: #ffffff; font-family: 'Outfit', sans-serif; font-size: 0.63rem; font-weight: 800; letter-spacing: 0.8px; padding: 3px 9px; border-radius: 6px; text-transform: uppercase; margin-bottom: 4px; }
   .store-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
   .store-name { font-family: 'Outfit', sans-serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 4px; color: #162121; }
   .store-meta { color: var(--muted); font-size: 0.8rem; display: flex; gap: 12px; flex-wrap: wrap; }
@@ -400,9 +400,9 @@
       const isBest = idx === 0;
       html += `
         <div class="scard ${isBest ? "best" : ""}" style="animation-delay:${idx * 0.06}s">
-          ${isBest ? '<div class="best-badge">🏆 Best Value</div>' : ""}
           <div class="store-top">
             <div>
+              ${isBest ? '<div class="best-badge">🏆 Best Value</div>' : ""}
               <div class="store-name">🛒 ${info.name || "Kroger Store"}</div>
               <div class="store-meta">
                 ${info.distance ? `<span>📍 ${info.distance} mi</span>` : ""}
