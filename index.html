@@ -94,7 +94,7 @@
   .total-lbl { color: var(--muted); font-size: 0.72rem; margin-top: 2px; }
   .items-list { border-top: 1px solid var(--border); padding-top: 14px; display: grid; gap: 7px; }
   .item-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-  .item-name { font-size: 0.87rem; font-weight: 500; }
+  .item-name { font-size: 0.87rem; font-weight: 500; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .item-brand { color: var(--muted); font-size: 0.75rem; }
   .item-price { font-size: 0.9rem; font-weight: 600; color: var(--accent); }
   .item-promo { background: rgba(194,148,112,0.15); border: 1px solid rgba(194,148,112,0.3); color: #a6744f; font-size: 0.7rem; padding: 1px 6px; border-radius: 4px; }
@@ -166,7 +166,7 @@
         <span class="input-icon">🏙️</span>
         <input type="text" id="zipInput" placeholder="Enter zip code (e.g. 23501)..." maxlength="10">
       </div>
-      <button class="btn btn-ghost" onclick="detectZip()" title="Enter your zip code manually">📍 Enter Zip</button>
+      <button id="zipBtn" class="btn btn-ghost" onclick="detectZip()" title="Enter your zip code manually">📍 Enter Zip</button>
     </div>
     <div class="status-bar" id="locStatus" style="display:none">
       <span class="dot green" id="locDot"></span>
@@ -212,6 +212,20 @@
   const HEADERS = { "Content-Type": "application/json", "ngrok-skip-browser-warning": "true" };
   const GET_HEADERS = { "ngrok-skip-browser-warning": "true" };
 
+  // Watch zip input — reshow button if zip is cleared or becomes invalid
+  document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("zipInput").addEventListener("input", function() {
+      const zip = this.value.trim();
+      const btn = document.getElementById("zipBtn");
+      if (!isValidZip(zip)) {
+        btn.style.display = "";
+        if (zip.length === 0) {
+          document.getElementById("locStatus").style.display = "none";
+        }
+      }
+    });
+  });
+
   let ingredients = [];
   let radius = 5;
   let storeMap = {};
@@ -242,13 +256,19 @@
     btn.classList.add("active");
   }
 
+  function isValidZip(zip) {
+    return /^\d{5}$/.test(zip);
+  }
+
   function detectZip() {
     const zip = document.getElementById("zipInput").value.trim();
-    if (zip) {
+    const btn = document.getElementById("zipBtn");
+    if (isValidZip(zip)) {
+      btn.style.display = "none";
       setStatus(`✓ Zip code ${zip} is set — ready to search.`, true);
     } else {
       document.getElementById("zipInput").focus();
-      setStatus("Please enter your zip code above.", false);
+      setStatus("Please enter a valid 5-digit zip code.", false);
     }
   }
 
