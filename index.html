@@ -23,9 +23,8 @@
   body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
   body::before {
     content: ''; position: fixed; inset: 0;
-    background-image: linear-gradient(rgba(128,185,200,0.15) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(128,185,200,0.15) 1px, transparent 1px);
-    background-size: 40px 40px; pointer-events: none; z-index: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(128,185,200,0.18) 0%, rgba(238,244,246,0) 70%);
+    pointer-events: none; z-index: 0;
   }
   .container { position: relative; z-index: 1; max-width: 940px; margin: 0 auto; padding: 0 20px 60px; }
   header { padding: 36px 0 24px; display: flex; align-items: center; justify-content: space-between; }
